@@ -18,7 +18,9 @@ from DownloaderForm import Ui_MainWindow
 
 
 class MainWindow(QMainWindow):
+    videoData = {}
     sendDownloadList = pyqtSignal(list)
+    sendLinkForMetaData = pyqtSignal(str)
     def __init__(self):  # init the class constructor
         super().__init__()
         # Create an instance of the UI MainForm class
@@ -35,20 +37,22 @@ class MainWindow(QMainWindow):
         self.ui.LinkList.model().rowsRemoved.connect(lambda p,f,l: self.ui.DeleteBtn.setEnabled(self.ui.LinkList.count() > 0))
         self.ui.LinkList.model().rowsInserted.connect(lambda p,f,l: self.ui.DownloadBtn.setEnabled(self.ui.LinkList.count() > 0))
         self.ui.LinkList.model().rowsRemoved.connect(lambda p,f,l: self.ui.DownloadBtn.setEnabled(self.ui.LinkList.count() > 0))
+        self.ui.LinkList.itemSelectionChanged.connect(self.sendMetaData)
 
 #=====================================================================================        
         self.ConfigureStatusBar()
 
     def AddLink(self):
-        if len(self.ui.LinkInputBox.text()) == 0:
+        linkToAdd = self.ui.LinkInputBox.text().strip()
+        if len(linkToAdd) == 0:
             QMessageBox.information(
                         self, 
                         "No", 
                         "There's nothing in there!"
                     )
-        if bool(validators.url(self.ui.LinkInputBox.text())) == True:
-            if len(self.ui.LinkInputBox.text()) > 0:
-                self.ui.LinkList.addItem(self.ui.LinkInputBox.text())
+        if bool(validators.url(linkToAdd)) == True:
+            if len(linkToAdd) > 0:
+                self.ui.LinkList.addItem(linkToAdd)
                 self.ui.LinkInputBox.setText("")
         else:
             QMessageBox.information(
@@ -71,6 +75,20 @@ class MainWindow(QMainWindow):
         self.statusBar().addWidget(self.ui.statusDownloadSpeed)
         self.statusBar().addWidget(self.ui.statusCurrentVideo)
 
+    def sendMetaData(self):
+        if self.ui.LinkList.item(self.ui.LinkList.currentRow()).text() in self.videoData:
+            print("Already Exists")
+            self.OutputMetaData(self.videoData[self.ui.LinkList.item(self.ui.LinkList.currentRow()).text()])
+        else:
+            self.sendLinkForMetaData.emit(self.ui.LinkList.item(self.ui.LinkList.currentRow()).text())
+
+    def OutputMetaData(self,data):
+        print("Outputting")
+        self.ui.Edit_LinkDetail.clear()
+        self.ui.Edit_LinkDetail.append(f"Title:{data['title']}")
+        self.ui.Edit_LinkDetail.append(f"Duration:{data['duration_minutes_seconds']}")
+        self.ui.Edit_LinkDetail.append(f"Size:{data['file_size_mb']} MB")
+
     def process_GUI_Updates(self, data_dict: dict):
         """Processes incoming dictionary data safely."""
         # Safeguard: ensure we have a valid, non-empty dictionary
@@ -90,6 +108,9 @@ class MainWindow(QMainWindow):
                 self.ui.statusCurrentVideo.setText("Video: " + message)
             case "Edit_LinkDetail":
                 self.ui.Edit_LinkDetail.append(message)
+            case "MetaData":
+                self.OutputMetaData(message)
+                self.videoData[message["link"]] = message
             case _:
                 print(f"[-] Warning: Unknown action key received -> '{action_type}'")
 

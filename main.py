@@ -15,7 +15,7 @@ if __name__ == '__main__':
     #window.ui.DeleteBtn.clicked.connect(worker.start_loop_safely)
     worker.updateGUI.connect(window.process_GUI_Updates)
     window.sendDownloadList.connect(worker.ReceiveDownloadList)
-    
+    window.sendLinkForMetaData.connect(worker.peekMetaData)
 
     window.show()
     sys.exit(app.exec())
