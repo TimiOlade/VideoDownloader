@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(500, 640)
+        MainWindow.resize(493, 667)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(parent=self.centralwidget)
@@ -23,52 +23,20 @@ class Ui_MainWindow(object):
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label.setObjectName("label")
         self.groupBox = QtWidgets.QGroupBox(parent=self.centralwidget)
-        self.groupBox.setGeometry(QtCore.QRect(10, 50, 480, 421))
+        self.groupBox.setGeometry(QtCore.QRect(10, 50, 480, 441))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
         self.groupBox.setFont(font)
         self.groupBox.setObjectName("groupBox")
-        self.LinkInputBox = QtWidgets.QLineEdit(parent=self.groupBox)
-        self.LinkInputBox.setGeometry(QtCore.QRect(10, 30, 361, 20))
-        self.LinkInputBox.setObjectName("LinkInputBox")
-        self.AddBtn = QtWidgets.QPushButton(parent=self.groupBox)
-        self.AddBtn.setEnabled(False)
-        self.AddBtn.setGeometry(QtCore.QRect(381, 30, 75, 23))
-        font = QtGui.QFont()
-        font.setFamily("Trebuchet MS")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        self.AddBtn.setFont(font)
-        self.AddBtn.setStyleSheet("#AddBtn:disabled{\n"
-"    color: black;\n"
-"    background-color: grey;\n"
-"}\n"
-"\n"
-"#AddBtn{\n"
-"    color: white;\n"
-"    background-color: green;\n"
-"}")
-        self.AddBtn.setObjectName("AddBtn")
-        self.LinkList = QtWidgets.QListWidget(parent=self.groupBox)
-        self.LinkList.setGeometry(QtCore.QRect(10, 72, 451, 231))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        self.LinkList.setFont(font)
-        self.LinkList.setObjectName("LinkList")
-        self.label_2 = QtWidgets.QLabel(parent=self.groupBox)
-        self.label_2.setGeometry(QtCore.QRect(10, 57, 47, 10))
-        font = QtGui.QFont()
-        font.setPointSize(8)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
-        self.DeleteBtn = QtWidgets.QPushButton(parent=self.groupBox)
+        self.tabWidget = QtWidgets.QTabWidget(parent=self.groupBox)
+        self.tabWidget.setGeometry(QtCore.QRect(4, 15, 471, 411))
+        self.tabWidget.setObjectName("tabWidget")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.DeleteBtn = QtWidgets.QPushButton(parent=self.tab)
         self.DeleteBtn.setEnabled(True)
-        self.DeleteBtn.setGeometry(QtCore.QRect(385, 305, 75, 23))
+        self.DeleteBtn.setGeometry(QtCore.QRect(380, 282, 75, 23))
         self.DeleteBtn.setStyleSheet("#DeleteBtn:disabled{\n"
 "    color: black;\n"
 "    background-color: grey;\n"
@@ -79,8 +47,8 @@ class Ui_MainWindow(object):
 "    background-color: red;\n"
 "}")
         self.DeleteBtn.setObjectName("DeleteBtn")
-        self.GbLinkDetail = QtWidgets.QGroupBox(parent=self.groupBox)
-        self.GbLinkDetail.setGeometry(QtCore.QRect(10, 326, 451, 80))
+        self.GbLinkDetail = QtWidgets.QGroupBox(parent=self.tab)
+        self.GbLinkDetail.setGeometry(QtCore.QRect(5, 303, 451, 80))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setBold(True)
@@ -99,8 +67,69 @@ class Ui_MainWindow(object):
         self.Edit_LinkDetail.setLineWrapMode(QtWidgets.QTextEdit.LineWrapMode.NoWrap)
         self.Edit_LinkDetail.setReadOnly(True)
         self.Edit_LinkDetail.setObjectName("Edit_LinkDetail")
+        self.LinkInputBox = QtWidgets.QLineEdit(parent=self.tab)
+        self.LinkInputBox.setGeometry(QtCore.QRect(5, 7, 361, 20))
+        self.LinkInputBox.setObjectName("LinkInputBox")
+        self.AddBtn = QtWidgets.QPushButton(parent=self.tab)
+        self.AddBtn.setEnabled(False)
+        self.AddBtn.setGeometry(QtCore.QRect(376, 7, 75, 23))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.AddBtn.setFont(font)
+        self.AddBtn.setStyleSheet("#AddBtn:disabled{\n"
+"    color: black;\n"
+"    background-color: grey;\n"
+"}\n"
+"\n"
+"#AddBtn{\n"
+"    color: white;\n"
+"    background-color: green;\n"
+"}")
+        self.AddBtn.setObjectName("AddBtn")
+        self.LinkList = QtWidgets.QListWidget(parent=self.tab)
+        self.LinkList.setGeometry(QtCore.QRect(5, 49, 451, 231))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        self.LinkList.setFont(font)
+        self.LinkList.setObjectName("LinkList")
+        self.label_2 = QtWidgets.QLabel(parent=self.tab)
+        self.label_2.setGeometry(QtCore.QRect(5, 34, 47, 10))
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QtWidgets.QWidget()
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.tab_2.setFont(font)
+        self.tab_2.setObjectName("tab_2")
+        self.URLBox = QtWidgets.QPlainTextEdit(parent=self.tab_2)
+        self.URLBox.setGeometry(QtCore.QRect(8, 6, 451, 341))
+        self.URLBox.setObjectName("URLBox")
+        self.MultiLoadBtn = QtWidgets.QPushButton(parent=self.tab_2)
+        self.MultiLoadBtn.setEnabled(True)
+        self.MultiLoadBtn.setGeometry(QtCore.QRect(380, 352, 75, 23))
+        self.MultiLoadBtn.setStyleSheet("#MultiLoadBtn:disabled{\n"
+"    color: black;\n"
+"    background-color: grey;\n"
+"}\n"
+"\n"
+"#MultiLoadBtn{\n"
+"    color: white;\n"
+"    background-color: darkblue;\n"
+"}")
+        self.MultiLoadBtn.setObjectName("MultiLoadBtn")
+        self.tabWidget.addTab(self.tab_2, "")
         self.groupBox_2 = QtWidgets.QGroupBox(parent=self.centralwidget)
-        self.groupBox_2.setGeometry(QtCore.QRect(10, 480, 481, 121))
+        self.groupBox_2.setGeometry(QtCore.QRect(10, 500, 481, 121))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -175,7 +204,7 @@ class Ui_MainWindow(object):
         self.statusDownloadSpeed.setObjectName("statusDownloadSpeed")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 500, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 493, 21))
         self.menubar.setObjectName("menubar")
         self.menuAbout = QtWidgets.QMenu(parent=self.menubar)
         self.menuAbout.setObjectName("menuAbout")
@@ -190,13 +219,17 @@ class Ui_MainWindow(object):
         self.actionDonate.setObjectName("actionDonate")
         self.actionAppInfo = QtGui.QAction(parent=MainWindow)
         self.actionAppInfo.setObjectName("actionAppInfo")
+        self.actionHelp = QtGui.QAction(parent=MainWindow)
+        self.actionHelp.setObjectName("actionHelp")
         self.menuAbout.addAction(self.actionAbout)
         self.menuAbout.addAction(self.actionAppInfo)
         self.menuAbout.addSeparator()
         self.menuAbout.addAction(self.actionDonate)
+        self.menuAbout.addAction(self.actionHelp)
         self.menubar.addAction(self.menuAbout.menuAction())
 
         self.retranslateUi(MainWindow)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -204,10 +237,13 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Youtube Downloader"))
         self.label.setText(_translate("MainWindow", "YT Downloader"))
         self.groupBox.setTitle(_translate("MainWindow", "Download List"))
-        self.AddBtn.setText(_translate("MainWindow", "Add"))
-        self.label_2.setText(_translate("MainWindow", "Links"))
         self.DeleteBtn.setText(_translate("MainWindow", "Delete"))
         self.GbLinkDetail.setTitle(_translate("MainWindow", "Link Details"))
+        self.AddBtn.setText(_translate("MainWindow", "Add"))
+        self.label_2.setText(_translate("MainWindow", "Links"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Main"))
+        self.MultiLoadBtn.setText(_translate("MainWindow", "Load URLs"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Bulk URL Processing"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Download Details"))
         self.label_3.setText(_translate("MainWindow", "Destination"))
         self.DownloadBtn.setText(_translate("MainWindow", "Download"))
@@ -219,3 +255,4 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(_translate("MainWindow", "About"))
         self.actionDonate.setText(_translate("MainWindow", "Donate"))
         self.actionAppInfo.setText(_translate("MainWindow", "App Info"))
+        self.actionHelp.setText(_translate("MainWindow", "Help"))

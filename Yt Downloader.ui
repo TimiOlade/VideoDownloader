@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>640</height>
+    <width>493</width>
+    <height>667</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,7 @@
       <x>10</x>
       <y>50</y>
       <width>480</width>
-      <height>421</height>
+      <height>441</height>
      </rect>
     </property>
     <property name="font">
@@ -53,101 +53,36 @@
     <property name="title">
      <string>Download List</string>
     </property>
-    <widget class="QLineEdit" name="LinkInputBox">
+    <widget class="QTabWidget" name="tabWidget">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>361</width>
-       <height>20</height>
+       <x>4</x>
+       <y>15</y>
+       <width>471</width>
+       <height>411</height>
       </rect>
      </property>
-    </widget>
-    <widget class="QPushButton" name="AddBtn">
-     <property name="enabled">
-      <bool>false</bool>
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="geometry">
-      <rect>
-       <x>381</x>
-       <y>30</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Trebuchet MS</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#AddBtn:disabled{
-	color: black;
-	background-color: grey;
-}
-
-#AddBtn{
-	color: white;
-	background-color: green;
-}</string>
-     </property>
-     <property name="text">
-      <string>Add</string>
-     </property>
-    </widget>
-    <widget class="QListWidget" name="LinkList">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>72</y>
-       <width>451</width>
-       <height>231</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>57</y>
-       <width>47</width>
-       <height>10</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>8</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Links</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="DeleteBtn">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>385</x>
-       <y>305</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#DeleteBtn:disabled{
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Main</string>
+      </attribute>
+      <widget class="QPushButton" name="DeleteBtn">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>282</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#DeleteBtn:disabled{
 	color: black;
 	background-color: grey;
 }
@@ -156,58 +91,189 @@
 	color: white;
 	background-color: red;
 }</string>
-     </property>
-     <property name="text">
-      <string>Delete</string>
-     </property>
-    </widget>
-    <widget class="QGroupBox" name="GbLinkDetail">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>326</y>
-       <width>451</width>
-       <height>80</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Shell Dlg 2</family>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="title">
-      <string>Link Details</string>
-     </property>
-     <widget class="QTextEdit" name="Edit_LinkDetail">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>15</y>
-        <width>441</width>
-        <height>61</height>
-       </rect>
-      </property>
+       </property>
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="GbLinkDetail">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>303</y>
+         <width>451</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="title">
+        <string>Link Details</string>
+       </property>
+       <widget class="QTextEdit" name="Edit_LinkDetail">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>15</y>
+          <width>441</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 222);</string>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="lineWrapMode">
+         <enum>QTextEdit::NoWrap</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLineEdit" name="LinkInputBox">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>7</y>
+         <width>361</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="AddBtn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>376</x>
+         <y>7</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Trebuchet MS</family>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#AddBtn:disabled{
+	color: black;
+	background-color: grey;
+}
+
+#AddBtn{
+	color: white;
+	background-color: green;
+}</string>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="LinkList">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>49</y>
+         <width>451</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>34</y>
+         <width>47</width>
+         <height>10</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Links</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_2">
       <property name="font">
        <font>
-        <pointsize>8</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 222);</string>
-      </property>
-      <property name="lineWidth">
-       <number>1</number>
-      </property>
-      <property name="lineWrapMode">
-       <enum>QTextEdit::NoWrap</enum>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
+      <attribute name="title">
+       <string>Bulk URL Processing</string>
+      </attribute>
+      <widget class="QPlainTextEdit" name="URLBox">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>6</y>
+         <width>451</width>
+         <height>341</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="MultiLoadBtn">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>352</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#MultiLoadBtn:disabled{
+	color: black;
+	background-color: grey;
+}
+
+#MultiLoadBtn{
+	color: white;
+	background-color: darkblue;
+}</string>
+       </property>
+       <property name="text">
+        <string>Load URLs</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -215,7 +281,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>480</y>
+      <y>500</y>
       <width>481</width>
       <height>121</height>
      </rect>
@@ -397,7 +463,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>500</width>
+     <width>493</width>
      <height>21</height>
     </rect>
    </property>
@@ -409,6 +475,7 @@
     <addaction name="actionAppInfo"/>
     <addaction name="separator"/>
     <addaction name="actionDonate"/>
+    <addaction name="actionHelp"/>
    </widget>
    <addaction name="menuAbout"/>
   </widget>
@@ -430,6 +497,11 @@
   <action name="actionAppInfo">
    <property name="text">
     <string>App Info</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
    </property>
   </action>
  </widget>
