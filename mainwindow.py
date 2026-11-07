@@ -260,8 +260,16 @@ class MainWindow(QMainWindow):
         config.read(self.configFile)
         self.ui.DestFolder.setText(config.get('Settings',"DestPath"))
 
-    def newmessageBox(self,title,text):
-        QMessageBox.information(self,title,text)
+    def newmessageBox(self,title,text, ismodal):
+        if ismodal:
+            QMessageBox.information(self,title,text)
+        else:
+            msg_box = QMessageBox()
+            msg_box.setWindowTitle(title)
+            msg_box.setText(text)
+            msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+            msg_box.show()
+            
 
     def disableAll(self):
         self.ui.LinkInputBox.setDisabled(True)

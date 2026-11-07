@@ -5,11 +5,20 @@ import json
 import os
 import sys
 from pathlib import Path
-from PyQt6.QtCore import QThread, pyqtSignal, QEventLoop
+from PyQt6.QtCore import QThread, pyqtSignal, QEventLoop, QObject
 
 vidfolder = "DownloadedVids"
 os.makedirs(vidfolder, exist_ok=True)
 
+
+class GlobalSignals(QObject):
+    newMessageBox = pyqtSignal(str, str, bool)
+    downloadBoxUpdate = pyqtSignal(str)
+
+    def __init__(self, parent=None):
+            super().__init__(parent)
+
+globsignalbus = GlobalSignals()
 class YdlLogger:
     """Custom logger passed to yt-dlp via the 'logger' option.
     yt-dlp requires debug(), warning() and error(); update these later
@@ -19,6 +28,18 @@ class YdlLogger:
         # yt-dlp sends both debug and regular info messages here.
         # Info messages are the ones that don't start with '[debug] '.
         # TODO: handle/route these messages
+
+        if "[Merger] Merging formats into" in msg:
+            globsignalbus.newMessageBox.emit("Merging","Merging video and audio into file \nPlease do not close the app. ",False)
+            globsignalbus.downloadBoxUpdate.emit("Merging Video and Audio")
+            print("Merging now...")
+        elif "mp4 has already been downloaded" in msg:
+            vidtext = msg.replace("[download] ","")
+            vidtext = vidtext.replace(".mp4 has already been downloaded", " already exists")
+            globsignalbus.newMessageBox.emit("Video already exists",vidtext,True)
+            globsignalbus.downloadBoxUpdate.emit(vidtext)
+        else:
+            print(msg)
         pass
 
     def info(self, msg):
@@ -32,6 +53,8 @@ class YdlLogger:
     def error(self, msg):
         # TODO: handle errors
         print("[yt-dlp ERROR]", msg)
+        if "[download] Got error: [SSL: RECORD_LAYER_FAILURE] record layer failure (_ssl.c:3033)" in msg:
+           globsignalbus.newMessageBox.emit("Download failed","Download failed due to some internet issue.\n Retrying the download usually solves it and kee",True) 
 
 
 class WorkerClass(QThread):
@@ -39,10 +62,10 @@ class WorkerClass(QThread):
     updateGUI = pyqtSignal(dict)
     progress_signal = pyqtSignal(str, str, str, int)
     destFolderNeeded = pyqtSignal()
-    messageBox = pyqtSignal(str,str)
+    messageBox = pyqtSignal(str, str, bool)
     
     configFile = "config.json"
-    VERSION = "1.6 (2026-11)"
+    VERSION = "1.7 (2026-11)"
     gURLList = []
     ydl_opts = {}
     gPath = ""
@@ -51,6 +74,9 @@ class WorkerClass(QThread):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        globsignalbus.newMessageBox.connect(self.messageBox)
+        globsignalbus.downloadBoxUpdate.connect(self.updateDownloadBox)
 
     def run(self):
         """Standard QThread entry point."""
@@ -80,7 +106,7 @@ class WorkerClass(QThread):
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([link])
             
-        self.messageBox.emit("Download Complete",f"{self.vidlistlength} video(s) downloaded")
+        self.messageBox.emit("Download Complete",f"{self.vidlistlength} video(s) downloaded", True)
         self.updateGUI.emit({"RestartAll" : ""})
 
     def ReceiveDownloadPath(self, path):
@@ -101,6 +127,9 @@ class WorkerClass(QThread):
         self.gURLList = URLList
         self.start()
 
+    def updateDownloadBox(self,text):
+        self.updateGUI.emit({"Edit_LinkDetail":text})
+
     @staticmethod
     def clean_ansi_codes(text):
         # Regex pattern to match all terminal ANSI escape sequences
@@ -120,7 +149,9 @@ class WorkerClass(QThread):
 
             # Calculate a clean percentage
             percentage = int((downloaded / total) * 100) if total > 0 else 0
-            
+
+            if percentage > 95:
+                percentage = 95 # This is to make sure the progress bar never goes past 95
 
             # ETA: yt-dlp gives raw seconds (or None) - format as M:SS
             eta_seconds = status.get("eta")
@@ -178,7 +209,7 @@ class WorkerClass(QThread):
         
 
                 self.updateGUI.emit({"MetaData": {"title": str(title),"duration_seconds": str(duration_seconds),"file_size_mb": str(round(size_mb, 2)),"duration_minutes_seconds": f"{time[0]}:{time[1]:02d}","link": url}})
-                print("Yeah again")
+
                 return {
                     "title": str(title),
                     "duration_seconds": str(duration_seconds),
