@@ -67,7 +67,7 @@ class MainWindow(QMainWindow):
         self.ui.getFolderBtn.clicked.connect(self.GetFolder)
         self.ui.actionAppInfo.triggered.connect(self.displayAppData)
         self.ui.actionDonate.triggered.connect(self.displayDonateInfo)
-        self.ui.actionHelp.triggered.connect(lambda: os.startfile(os.path.join(os.path.dirname(sys.argv[0]), "Help.pdf")))
+        self.ui.actionHelp.triggered.connect(self.openHelpFile)
         self.ui.ClearLoggerBtn.clicked.connect(self.ui.DownloadLog.clear)
 
 #=====================================================================================        
@@ -184,7 +184,15 @@ class MainWindow(QMainWindow):
             self.saveSignal.emit(folder_path)
 
 
+    def openHelpFile(self):
+        try:
+            helppath = sys._MEIPASS
+        except:
+            helppath = os.path.abspath(".")
 
+        pdfpath = os.path.join(helppath,"Help.pdf")
+
+        os.startfile(pdfpath)
     
         
     def process_GUI_Updates(self, data_dict: dict):

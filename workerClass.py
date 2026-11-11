@@ -7,8 +7,8 @@ import sys
 from pathlib import Path
 from PyQt6.QtCore import QThread, pyqtSignal, QEventLoop, QObject
 
-vidfolder = "DownloadedVids"
-os.makedirs(vidfolder, exist_ok=True)
+
+
 
 
 class GlobalSignals(QObject):
@@ -68,9 +68,12 @@ class WorkerClass(QThread):
     progress_signal = pyqtSignal(str, str, str, int)
     destFolderNeeded = pyqtSignal()
     messageBox = pyqtSignal(str, str, bool)
+    vidfolder = "/DownloadedVids"
+    downloads = Path.home() / "Downloads"
+    fulldownloadpath = ""
     
     configFile = "config.json"
-    VERSION = "1.7 (2026-11)"
+    VERSION = "1.9 (2026-11)"
     gURLList = []
     ydl_opts = {}
     gPath = ""
@@ -83,6 +86,13 @@ class WorkerClass(QThread):
         globsignalbus.newMessageBox.connect(self.messageBox)
         globsignalbus.downloadBoxUpdate.connect(self.updateDownloadBox)
         globsignalbus.downloadLogUpdate.connect(self.updateDownloadLog)
+
+        if not self.downloads.exists():
+            raise FileNotFoundError(f"Downloads folder not found: {self.downloads}")
+        else:
+            self.fulldownloadpath = Path(str(self.downloads) + self.vidfolder)
+            print(self.fulldownloadpath)
+            self.fulldownloadpath.mkdir(parents=True, exist_ok=True)
 
     def run(self):
         """Standard QThread entry point."""
@@ -263,7 +273,8 @@ class WorkerClass(QThread):
 
     def load_config_file(self):
         if not os.path.exists(self.configFile):
-            save_dict = {"DestPath": str(Path(__file__).parent) + "/" + vidfolder}
+            print(str(self.fulldownloadpath) + "Hello")
+            save_dict = {"DestPath": str(self.fulldownloadpath)}
             with open(self.configFile, "w") as file:
                 json.dump(save_dict , file, indent=4)
 

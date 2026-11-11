@@ -6,7 +6,7 @@ from workerClass import WorkerClass
 
 #-------------------------[ Use this commands to compile a standalone ]------------
 # For Windows
-#  py -3.15 -m PyInstaller --onefile --windowed --clean --name "WebVidDownloader" --add-data "bin/windows;bin/windows" main.py
+#  py -3.15 -m PyInstaller --onefile --windowed --clean --name "WebVidDownloader" --add-data "bin/windows;bin/windows" --add-data "Help.pdf;." main.py
 
 #---------------------------[Do all Imports Above]-------------------------
 APPNAME = "Video Downloader v" 
