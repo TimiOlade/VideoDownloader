@@ -36,8 +36,3 @@ While it is running, you have a download logger that gives info on the download 
 If you need help there is click About > Help, which will open a PDF file using your default PDF viewer
 
 ![You can click about then help to access a help pdf file](GitImages/HelpMenu.png)
-While it is running, you have a download logger that gives info on the download and extra details on the status bar
-![Download logger tab selected](GitImages/DownloadLogger.png)
-
-If you need help there is click About > Help, which will open a PDF file using your default PDF viewer
-![You can click about then help to access a help pdf file](GitImages/HelpMenu.png)
