@@ -14,6 +14,7 @@ os.makedirs(vidfolder, exist_ok=True)
 class GlobalSignals(QObject):
     newMessageBox = pyqtSignal(str, str, bool)
     downloadBoxUpdate = pyqtSignal(str)
+    downloadLogUpdate = pyqtSignal(str)
 
     def __init__(self, parent=None):
             super().__init__(parent)
@@ -28,7 +29,6 @@ class YdlLogger:
         # yt-dlp sends both debug and regular info messages here.
         # Info messages are the ones that don't start with '[debug] '.
         # TODO: handle/route these messages
-
         if "[Merger] Merging formats into" in msg:
             globsignalbus.newMessageBox.emit("Merging","Merging video and audio into file \nPlease do not close the app. ",False)
             globsignalbus.downloadBoxUpdate.emit("Merging Video and Audio")
@@ -40,21 +40,26 @@ class YdlLogger:
             globsignalbus.downloadBoxUpdate.emit(vidtext)
         else:
             print(msg)
-        pass
+
+        if "[download]" not in msg and "ETA" not in msg:
+            globsignalbus.downloadLogUpdate.emit("Debug: " + msg)
 
     def info(self, msg):
         # TODO: handle info messages
+        globsignalbus.downloadLogUpdate.emit("Info: " + msg)
         pass
 
     def warning(self, msg):
         # TODO: handle warnings
         print("[yt-dlp WARNING]", msg)
+        globsignalbus.downloadLogUpdate.emit("Warning: " + msg)
 
     def error(self, msg):
         # TODO: handle errors
         print("[yt-dlp ERROR]", msg)
         if "[download] Got error: [SSL: RECORD_LAYER_FAILURE] record layer failure (_ssl.c:3033)" in msg:
            globsignalbus.newMessageBox.emit("Download failed","Download failed due to some internet issue.\n Retrying the download usually solves it and kee",True) 
+        globsignalbus.downloadLogUpdate.emit("Error: " + msg)
 
 
 class WorkerClass(QThread):
@@ -77,6 +82,7 @@ class WorkerClass(QThread):
 
         globsignalbus.newMessageBox.connect(self.messageBox)
         globsignalbus.downloadBoxUpdate.connect(self.updateDownloadBox)
+        globsignalbus.downloadLogUpdate.connect(self.updateDownloadLog)
 
     def run(self):
         """Standard QThread entry point."""
@@ -129,6 +135,11 @@ class WorkerClass(QThread):
 
     def updateDownloadBox(self,text):
         self.updateGUI.emit({"Edit_LinkDetail":text})
+
+    def updateDownloadLog(self,text):
+            self.updateGUI.emit({"DownloadLog":text})
+
+
 
     @staticmethod
     def clean_ansi_codes(text):

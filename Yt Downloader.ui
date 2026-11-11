@@ -58,12 +58,12 @@
       <rect>
        <x>4</x>
        <y>15</y>
-       <width>471</width>
-       <height>411</height>
+       <width>470</width>
+       <height>410</height>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -272,6 +272,51 @@
        </property>
        <property name="text">
         <string>Load URLs</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Download Logger</string>
+      </attribute>
+      <widget class="QPlainTextEdit" name="DownloadLog">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>6</y>
+         <width>451</width>
+         <height>341</height>
+        </rect>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ClearLoggerBtn">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>350</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#MultiLoadBtn:disabled{
+	color: black;
+	background-color: grey;
+}
+
+#MultiLoadBtn{
+	color: white;
+	background-color: darkblue;
+}</string>
+       </property>
+       <property name="text">
+        <string>Clear</string>
        </property>
       </widget>
      </widget>

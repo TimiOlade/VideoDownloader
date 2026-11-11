@@ -68,6 +68,7 @@ class MainWindow(QMainWindow):
         self.ui.actionAppInfo.triggered.connect(self.displayAppData)
         self.ui.actionDonate.triggered.connect(self.displayDonateInfo)
         self.ui.actionHelp.triggered.connect(lambda: os.startfile(os.path.join(os.path.dirname(sys.argv[0]), "Help.pdf")))
+        self.ui.ClearLoggerBtn.clicked.connect(self.ui.DownloadLog.clear)
 
 #=====================================================================================        
         self.ConfigureStatusBar()
@@ -220,6 +221,8 @@ class MainWindow(QMainWindow):
             case "DownloadStatus":
                 self.ui.Edit_LinkDetail.clear()
                 self.ui.Edit_LinkDetail.append(f"Video File: {message[0]}\n\nDownloading video {message[1]}")
+            case "DownloadLog":
+                self.ui.DownloadLog.appendPlainText(message)
             case _:
                 print(f"[-] Warning: Unknown action key received -> '{action_type}'")
     

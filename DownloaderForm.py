@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
         self.groupBox.setFont(font)
         self.groupBox.setObjectName("groupBox")
         self.tabWidget = QtWidgets.QTabWidget(parent=self.groupBox)
-        self.tabWidget.setGeometry(QtCore.QRect(4, 15, 471, 411))
+        self.tabWidget.setGeometry(QtCore.QRect(4, 15, 470, 410))
         self.tabWidget.setObjectName("tabWidget")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
@@ -128,6 +128,26 @@ class Ui_MainWindow(object):
 "}")
         self.MultiLoadBtn.setObjectName("MultiLoadBtn")
         self.tabWidget.addTab(self.tab_2, "")
+        self.tab_3 = QtWidgets.QWidget()
+        self.tab_3.setObjectName("tab_3")
+        self.DownloadLog = QtWidgets.QPlainTextEdit(parent=self.tab_3)
+        self.DownloadLog.setGeometry(QtCore.QRect(8, 6, 451, 341))
+        self.DownloadLog.setReadOnly(True)
+        self.DownloadLog.setObjectName("DownloadLog")
+        self.ClearLoggerBtn = QtWidgets.QPushButton(parent=self.tab_3)
+        self.ClearLoggerBtn.setEnabled(True)
+        self.ClearLoggerBtn.setGeometry(QtCore.QRect(380, 350, 75, 23))
+        self.ClearLoggerBtn.setStyleSheet("#MultiLoadBtn:disabled{\n"
+"    color: black;\n"
+"    background-color: grey;\n"
+"}\n"
+"\n"
+"#MultiLoadBtn{\n"
+"    color: white;\n"
+"    background-color: darkblue;\n"
+"}")
+        self.ClearLoggerBtn.setObjectName("ClearLoggerBtn")
+        self.tabWidget.addTab(self.tab_3, "")
         self.groupBox_2 = QtWidgets.QGroupBox(parent=self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(10, 500, 481, 121))
         font = QtGui.QFont()
@@ -229,7 +249,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuAbout.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -244,6 +264,8 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Main"))
         self.MultiLoadBtn.setText(_translate("MainWindow", "Load URLs"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Bulk URL Processing"))
+        self.ClearLoggerBtn.setText(_translate("MainWindow", "Clear"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "Download Logger"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Download Details"))
         self.label_3.setText(_translate("MainWindow", "Destination"))
         self.DownloadBtn.setText(_translate("MainWindow", "Download"))
