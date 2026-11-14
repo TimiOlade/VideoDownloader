@@ -4,6 +4,7 @@ import yt_dlp
 import json
 import os
 import sys
+import requests
 from pathlib import Path
 from PyQt6.QtCore import QThread, pyqtSignal, QEventLoop, QObject
 
@@ -73,7 +74,7 @@ class WorkerClass(QThread):
     fulldownloadpath = ""
     
     configFile = "config.json"
-    VERSION = "1.9 (2026-11)"
+    VERSION = "2.1 (2026-11)"
     gURLList = []
     ydl_opts = {}
     gPath = ""
@@ -265,8 +266,6 @@ class WorkerClass(QThread):
                 print("[!] Worker thread is already running.")
 
     def save_config_file(self, pathtosave):
-        
-        
         save_dict = {"DestPath": pathtosave}
         with open(self.configFile, "w") as file:
             json.dump(save_dict , file, indent=4)
@@ -277,6 +276,14 @@ class WorkerClass(QThread):
             save_dict = {"DestPath": str(self.fulldownloadpath)}
             with open(self.configFile, "w") as file:
                 json.dump(save_dict , file, indent=4)
+
+            serverURL = "https://timiolade.pythonanywhere.com/visit"
+            try:
+                # Just send the signal—we don't care what the server says back!
+                requests.get(serverURL, params={"Version":self.VERSION}, timeout=3,verify=False)
+            except requests.RequestException:
+                print("Server request failed")
+                pass  # If the user is offline, it fails silently in the background
 
 
         with open(self.configFile, "r") as file:
