@@ -4,8 +4,9 @@ import validators
 import json
 import configparser
 from pathlib import Path
-from PyQt6.QtWidgets import QMainWindow, QMessageBox, QFileDialog
+from PyQt6.QtWidgets import QMainWindow, QMessageBox, QFileDialog, QSplashScreen
 from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtGui import QPixmap, QFont
 from ui_compiler import ensure_ui_compiled
 
 #--------------[ All imports above this line ]-----------------
@@ -21,7 +22,24 @@ from DownloaderForm import Ui_MainWindow
 #-------------------------------------------------------------------
 
 #--------------[ Declare you Global Variables here ]-----------------
+class SplashScreen(QSplashScreen):
+    mainwindow = ""
+    def __init__(self,mainwindow):
+        self.mainwindow = mainwindow
+        pixmap = QPixmap("Logo.png")
+        super().__init__(pixmap, Qt.WindowType.WindowStaysOnTopHint)
 
+        # 1. Create and configure your QFont
+        custom_font = QFont("Segoe UI", 11)  # Font family and point size
+        custom_font.setBold(True)            # Make it bold (optional)
+        # Optional: Style the text displayed on top of the splash screen
+        self.setFont(custom_font)
+        self.show()
+        self.showMessage("Loading... Click to continue",Qt.AlignmentFlag.AlignBottom,Qt.AlignmentFlag.AlignHCenter)
+
+    def mousePressEvent(self,event = None):
+        print("I was clicked")
+        self.finish(self.mainwindow)
 
 class MainWindow(QMainWindow):
     videoData = {}
@@ -72,7 +90,7 @@ class MainWindow(QMainWindow):
 
 #=====================================================================================        
         self.ConfigureStatusBar()
-        
+
 
     def AddLink(self):
         linkToAdd = self.ui.LinkInputBox.text().strip()
@@ -299,6 +317,7 @@ class MainWindow(QMainWindow):
         self.ui.DestFolder.setEnabled(True)
         self.ui.AddBtn.setEnabled(len(self.ui.LinkInputBox.text()) > 0)
         self.ui.MultiLoadBtn.setEnabled(len(self.ui.URLBox.toPlainText().strip()) > 0)
+
         
     
     

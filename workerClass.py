@@ -5,8 +5,9 @@ import json
 import os
 import sys
 import requests
+from socket import gethostname
 from pathlib import Path
-from PyQt6.QtCore import QThread, pyqtSignal, QEventLoop, QObject
+from PyQt6.QtCore import QThread, pyqtSignal, QObject
 
 
 
@@ -286,6 +287,9 @@ class WorkerClass(QThread):
 
         if my_dict["DeviceLogged"] == False:
             self.isDeviceLogged = self.LogDevice()
+            if self.isDeviceLogged == True:
+                self.save_config_file(my_dict["DestPath"])
+
 
         self.updateGUI.emit({"DestFolder": my_dict["DestPath"]})
 
@@ -293,11 +297,12 @@ class WorkerClass(QThread):
         serverURL = "https://timiolade.pythonanywhere.com/visit"
         try:
             # Just send the signal—we don't care what the server says back!
-            requests.get(serverURL, params={"Version":self.VERSION}, timeout=3,verify=False)
+            requests.get(serverURL, params={"Version":self.VERSION,"ComputerName": gethostname()}, timeout=3,verify=False)
         except requests.RequestException:
             print("Server request failed")
             return False
             pass  # If the user is offline, it fails silently in the background
+        print("Device logged")
         return True
 
     @staticmethod

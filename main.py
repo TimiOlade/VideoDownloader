@@ -1,7 +1,9 @@
 # main.py
 import sys
 from PyQt6 import QtWidgets
-from mainwindow import MainWindow
+from PyQt6.QtGui import QFont, QPixmap
+from PyQt6.QtCore import QTimer
+from mainwindow import MainWindow, SplashScreen
 from workerClass import WorkerClass
 
 #-------------------------[ Use this commands to compile a standalone ]------------
@@ -16,6 +18,9 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
     worker = WorkerClass()
+    #Initialize the splash screen
+    splashScreen = SplashScreen(window)
+    QTimer.singleShot(10000,splashScreen.mousePressEvent)
 
     # Clean signal & slot wiring
     #window.ui.AddBtn.clicked.connect(worker.tester)
