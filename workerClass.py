@@ -72,6 +72,7 @@ class WorkerClass(QThread):
     vidfolder = "/DownloadedVids"
     downloads = Path.home() / "Downloads"
     fulldownloadpath = ""
+    isDeviceLogged = False
     
     configFile = "config.json"
     VERSION = "2.1 (2026-11)"
@@ -266,30 +267,38 @@ class WorkerClass(QThread):
                 print("[!] Worker thread is already running.")
 
     def save_config_file(self, pathtosave):
-        save_dict = {"DestPath": pathtosave}
+        save_dict = {"DestPath": pathtosave,"DeviceLogged": self.isDeviceLogged}
         with open(self.configFile, "w") as file:
             json.dump(save_dict , file, indent=4)
 
     def load_config_file(self):
         if not os.path.exists(self.configFile):
             print(str(self.fulldownloadpath) + "Hello")
-            save_dict = {"DestPath": str(self.fulldownloadpath)}
+            save_dict = {"DestPath": str(self.fulldownloadpath),"DeviceLogged": self.isDeviceLogged}
             with open(self.configFile, "w") as file:
                 json.dump(save_dict , file, indent=4)
 
-            serverURL = "https://timiolade.pythonanywhere.com/visit"
-            try:
-                # Just send the signal—we don't care what the server says back!
-                requests.get(serverURL, params={"Version":self.VERSION}, timeout=3,verify=False)
-            except requests.RequestException:
-                print("Server request failed")
-                pass  # If the user is offline, it fails silently in the background
+            
 
 
         with open(self.configFile, "r") as file:
             my_dict = json.load(file)
 
+        if my_dict["DeviceLogged"] == False:
+            self.isDeviceLogged = self.LogDevice()
+
         self.updateGUI.emit({"DestFolder": my_dict["DestPath"]})
+
+    def LogDevice(self):
+        serverURL = "https://timiolade.pythonanywhere.com/visit"
+        try:
+            # Just send the signal—we don't care what the server says back!
+            requests.get(serverURL, params={"Version":self.VERSION}, timeout=3,verify=False)
+        except requests.RequestException:
+            print("Server request failed")
+            return False
+            pass  # If the user is offline, it fails silently in the background
+        return True
 
     @staticmethod
     def get_ffmpeg_path():
