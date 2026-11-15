@@ -5,8 +5,10 @@ import json
 import os
 import sys
 import requests
+from uuid import getnode
 from socket import gethostname
 from pathlib import Path
+from datetime import datetime
 from PyQt6.QtCore import QThread, pyqtSignal, QObject
 
 
@@ -73,10 +75,10 @@ class WorkerClass(QThread):
     vidfolder = "/DownloadedVids"
     downloads = Path.home() / "Downloads"
     fulldownloadpath = ""
-    isDeviceLogged = False
+    lastLogged = False
     
     configFile = "config.json"
-    VERSION = "2.1 (2026-11)"
+    VERSION = "2.3 (2026-11)"
     gURLList = []
     ydl_opts = {}
     gPath = ""
@@ -268,14 +270,14 @@ class WorkerClass(QThread):
                 print("[!] Worker thread is already running.")
 
     def save_config_file(self, pathtosave):
-        save_dict = {"DestPath": pathtosave,"DeviceLogged": self.isDeviceLogged}
+        save_dict = {"DestPath": pathtosave,"LastTimeLogged": self.lastLogged}
         with open(self.configFile, "w") as file:
             json.dump(save_dict , file, indent=4)
 
     def load_config_file(self):
         if not os.path.exists(self.configFile):
             print(str(self.fulldownloadpath) + "Hello")
-            save_dict = {"DestPath": str(self.fulldownloadpath),"DeviceLogged": self.isDeviceLogged}
+            save_dict = {"DestPath": str(self.fulldownloadpath),"LastTimeLogged": self.lastLogged}
             with open(self.configFile, "w") as file:
                 json.dump(save_dict , file, indent=4)
 
@@ -285,10 +287,10 @@ class WorkerClass(QThread):
         with open(self.configFile, "r") as file:
             my_dict = json.load(file)
 
-        if my_dict["DeviceLogged"] == False:
-            self.isDeviceLogged = self.LogDevice()
-            if self.isDeviceLogged == True:
-                self.save_config_file(my_dict["DestPath"])
+        if my_dict["LastTimeLogged"] != self.getdate():
+            self.lastLogged = my_dict["LastTimeLogged"]
+            self.LogDevice()
+            self.save_config_file(my_dict["DestPath"])
 
 
         self.updateGUI.emit({"DestFolder": my_dict["DestPath"]})
@@ -297,13 +299,22 @@ class WorkerClass(QThread):
         serverURL = "https://timiolade.pythonanywhere.com/visit"
         try:
             # Just send the signal—we don't care what the server says back!
-            requests.get(serverURL, params={"Version":self.VERSION,"ComputerName": gethostname()}, timeout=3,verify=False)
+            requests.get(serverURL, params={"Version":self.VERSION,"ComputerName": gethostname(),"MAC": self.getmacaddress()}, timeout=3,verify=False)
         except requests.RequestException:
             print("Server request failed")
-            return False
             pass  # If the user is offline, it fails silently in the background
         print("Device logged")
-        return True
+        self.lastLogged = self.getdate()
+
+
+    def getmacaddress(self):
+        raw_address = getnode()
+        return ":".join(re.findall("..", "%012x" % raw_address))
+
+    def getdate(self):
+        now = datetime.now()
+        f = now.strftime("%Y-%m-%d")
+        return f
 
     @staticmethod
     def get_ffmpeg_path():
@@ -320,4 +331,11 @@ class WorkerClass(QThread):
         else:
             return os.path.join(base_path, "bin", "linux", "ffmpeg")
 
-        
+def getResourcePath(relative_path):
+    try:
+        resourcepath = sys._MEIPASS
+    except:
+        resourcepath = os.path.abspath(".")
+
+    finalpath = os.path.join(resourcepath,relative_path)
+    return finalpath

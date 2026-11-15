@@ -3,24 +3,32 @@ import sys
 from PyQt6 import QtWidgets
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtCore import QTimer
-from mainwindow import MainWindow, SplashScreen
-from workerClass import WorkerClass
+from mainwindow import MainWindow
+from workerClass import WorkerClass, getResourcePath
 
 #-------------------------[ Use this commands to compile a standalone ]------------
 # For Windows
-#  py -3.15 -m PyInstaller --onefile --windowed --clean --name "WebVidDownloader" --add-data "bin/windows;bin/windows" --add-data "Help.pdf;." main.py
+#  py -3.15 -m PyInstaller --onefile --windowed --clean --name "WebVidDownloader" --add-data "bin/windows;bin/windows" --add-data "Help.pdf;." --add-data "Movie_Logo.jpg;." main.py
 
 #---------------------------[Do all Imports Above]-------------------------
 APPNAME = "Video Downloader v" 
 
 
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
+
+    pixmap = QPixmap(getResourcePath("Movie_Logo.jpg"))
+    SplashScreen = QtWidgets.QSplashScreen(pixmap)
+    SplashScreen.show()
+
+    app.processEvents()
+
     window = MainWindow()
     worker = WorkerClass()
-    #Initialize the splash screen
-    splashScreen = SplashScreen(window)
-    QTimer.singleShot(10000,splashScreen.mousePressEvent)
+
+    def CloseSplashScreen():
+        SplashScreen.finish(window)
 
     # Clean signal & slot wiring
     #window.ui.AddBtn.clicked.connect(worker.tester)
@@ -36,4 +44,5 @@ if __name__ == '__main__':
     worker.load_config_file()
 
     window.show()
+    QTimer.singleShot(8000,CloseSplashScreen)
     sys.exit(app.exec())
